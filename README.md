@@ -28,40 +28,36 @@ yarn add react-utils
 To use any of the components or utility functions provided by React Utils, simply import them into your project:
 
 ```tsx
-Copy code
 import { Image } from 'react-utils';
 
 const App = () => (
-
   <div>
     <Image src="example.jpg" alt="Example Image" />
   </div>
 );
 
 export default App;
-
 ```
 
 ## Components
 
-Image Component
+### Image Component
+
 The Image component is a reusable wrapper around the native HTML <img> element. It provides support for all standard image attributes, as well as any additional props that you want to pass through.
 
-### Usage Example
+#### Usage Example
 
 ```tsx
-Copy code
 import { Image } from 'react-utils';
 
 const MyComponent = () => (
-<Image
+  <Image
     src="https://example.com/image.jpg"
     alt="A beautiful example image"
     width="500"
     height="300"
   />
 );
-
 ```
 
 #### Props
@@ -79,9 +75,7 @@ This package uses Jest and React Testing Library for unit testing.
 To run the tests, use the following command:
 
 ```bash
-Copy code
 npm run test
-
 ```
 
 or if you are using yarn:
@@ -96,17 +90,15 @@ yarn test
 ### Example Test (for Image component)
 
 ```tsx
-Copy code
 import { render, screen } from '@testing-library/react';
 import { Image } from 'react-utils';
 
 test('renders image with correct alt text', () => {
-render(<Image src="example.jpg" alt="Example Image" />);
-const imgElement = screen.getByAltText('Example Image');
-expect(imgElement).toBeInTheDocument();
-expect(imgElement).toHaveAttribute('src', 'example.jpg');
+  render(<Image src="example.jpg" alt="Example Image" />);
+  const imgElement = screen.getByAltText('Example Image');
+  expect(imgElement).toBeInTheDocument();
+  expect(imgElement).toHaveAttribute('src', 'example.jpg');
 });
-
 ```
 
 ## Linting and Formatting
@@ -116,7 +108,6 @@ This package uses ESLint for code linting and Prettier for code formatting.
 To run the linter and ensure that the code conforms to best practices, use the following commands:
 
 ```bash
-Copy code
 npm run lint
 
 # or
@@ -128,7 +119,6 @@ yarn lint
 ### To format the code with Prettier:
 
 ```bash
-Copy code
 npm run prettier
 
 # or
