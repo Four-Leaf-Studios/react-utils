@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "declaration": true, // Generates .d.ts files for TypeScript types
+    "emitDeclarationOnly": true, // Only emit .d.ts files in this step
+    "outDir": "dist", // Output directory for declaration files
+    "jsx": "react", // JSX support for React
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "ES5", // Target a broad range of JS environments
+    "module": "ESNext",
+    "allowJs": true, // Allow JS files to be compiled
+    "sourceMap": true,
+    "strict": true,
+    "types": ["jest", "@testing-library/jest-dom"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
