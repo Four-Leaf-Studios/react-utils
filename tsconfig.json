@@ -9,6 +9,7 @@
     "skipLibCheck": true,
     "target": "ES5", // Target a broad range of JS environments
     "module": "ESNext",
+    "lib": ["DOM", "ES2015"],
     "allowJs": true, // Allow JS files to be compiled
     "sourceMap": true,
     "strict": true,
