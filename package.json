@@ -13,7 +13,8 @@
     "test": "jest",
     "build": "rollup -c",
     "watch": "rollup -c -w",
-    "prettier": "prettier --write .",
+    "prettier:fix": "prettier --write .",
+    "prettier:check": "prettier --check .",
     "lint": "eslint --config eslint.config.mjs src/**/*.{js,ts,jsx,tsx}"
   },
   "author": "",
