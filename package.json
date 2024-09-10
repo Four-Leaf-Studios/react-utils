@@ -1,6 +1,6 @@
 {
   "name": "@four-leaf-studios/react-utils",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "A utility package for React.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -11,6 +11,7 @@
   },
   "scripts": {
     "test": "jest",
+    "ci": "npm run lint && npm run prettier:check && npm run build && npm test",
     "build": "rollup -c",
     "watch": "rollup -c -w",
     "prettier:fix": "prettier --write .",
