@@ -8,6 +8,7 @@
 - [Usage](#usage)
 - [Components](#components)
   - [Image Component](#image-component)
+  - [LazyLoad Component](#lazyload-component)
 - [Testing](#testing)
 - [Linting and Formatting](#linting-and-formatting)
 - [Contributing](#contributing)
@@ -28,11 +29,23 @@ yarn add react-utils
 To use any of the components or utility functions provided by React Utils, simply import them into your project:
 
 ```tsx
-import { Image } from 'react-utils';
+import { Image, LazyLoad } from 'react-utils';
 
 const App = () => (
   <div>
     <Image src="example.jpg" alt="Example Image" />
+    <div>
+      <h1>Lazy Load Example</h1>
+      <p>Scroll down to see the lazy-loaded component.</p>
+
+      <div style={{ height: '100vh' }} />
+
+      <LazyLoad rootMargin="100px" threshold={0.25}>
+        <ComponentYouWantLazyLoaded />
+      </LazyLoad>
+
+      <div style={{ height: '100vh' }} />
+    </div>
   </div>
 );
 
@@ -54,8 +67,21 @@ const MyComponent = () => (
   <Image
     src="https://example.com/image.jpg"
     alt="A beautiful example image"
-    width="500"
-    height="300"
+    width={500}
+    height={300}
+    placeholderSrc="https://example.com/placeholder.jpg"
+    fallbackSrc="https://example.com/fallback.jpg"
+    lazy={true} // Lazy load image by default
+    sources={[
+      {
+        srcSet: 'https://example.com/image-320w.jpg',
+        media: '(max-width: 600px)',
+      },
+      {
+        srcSet: 'https://example.com/image-640w.jpg',
+        media: '(min-width: 601px)',
+      },
+    ]}
   />
 );
 ```
@@ -67,6 +93,27 @@ alt: Alternate text to display when the image cannot load.
 width: Optional width for the image.
 height: Optional height for the image.
 You can pass any other valid image attributes (such as loading, ref, etc.) as props, which will be spread onto the <img> element.
+
+### LazyLoad Component
+
+The LazyLoad component allows you to defer rendering its children until the containing element is visible in the viewport. This is useful for improving performance by lazy-loading non-critical content.
+
+#### Usage Example
+
+```tsx
+import { LazyLoad } from 'react-utils';
+
+const MyComponent = () => (
+  <LazyLoad rootMargin="100px" threshold={0.25}>
+    <div>Lazy Loaded Content</div>
+  </LazyLoad>
+);
+```
+
+#### Props
+
+rootMargin: Defines the margin around the root. This is used to determine how close the element is to the viewport before it is loaded. Defaults to "0px".
+threshold: Defines how much of the element must be visible before it is loaded. Defaults to 0.1 (10% visibility).
 
 ## Testing
 
@@ -98,6 +145,47 @@ test('renders image with correct alt text', () => {
   const imgElement = screen.getByAltText('Example Image');
   expect(imgElement).toBeInTheDocument();
   expect(imgElement).toHaveAttribute('src', 'example.jpg');
+});
+```
+
+### Example Test (for LazyLoad component)
+
+```tsx
+import { render, screen, act, waitFor } from '@testing-library/react';
+import LazyLoad from 'react-utils/LazyLoad';
+
+// Mocking IntersectionObserver
+beforeAll(() => {
+  const mockIntersectionObserver = jest.fn();
+  mockIntersectionObserver.mockReturnValue({
+    observe: jest.fn(),
+    disconnect: jest.fn(),
+    unobserve: jest.fn(),
+  });
+  window.IntersectionObserver = mockIntersectionObserver;
+});
+
+test('LazyLoad renders children when intersection occurs', async () => {
+  render(
+    <LazyLoad>
+      <div data-testid="lazy-loaded">Lazy Loaded Content</div>
+    </LazyLoad>
+  );
+
+  // Initially, the lazy loaded content should not be in the document
+  expect(screen.queryByTestId('lazy-loaded')).toBeNull();
+
+  // Simulate intersection
+  const observerCallback = (window.IntersectionObserver as jest.Mock).mock
+    .calls[0][0];
+  await act(async () => {
+    observerCallback([{ isIntersecting: true }]);
+  });
+
+  // The content should now be visible
+  await waitFor(() =>
+    expect(screen.getByTestId('lazy-loaded')).toBeInTheDocument()
+  );
 });
 ```
 
