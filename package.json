@@ -1,6 +1,6 @@
 {
   "name": "@four-leaf-studios/react-utils",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A utility package for React.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
