@@ -9,7 +9,7 @@ type ImageProps = React.ImgHTMLAttributes<HTMLImageElement> & {
 };
 
 // Create the Image component with the specified props
-const Image: React.FC<ImageProps> = ({
+export const Image: React.FC<ImageProps> = ({
   placeholderSrc,
   fallbackSrc,
   src,
@@ -72,5 +72,3 @@ const Image: React.FC<ImageProps> = ({
     </picture>
   );
 };
-
-export default Image;
