@@ -6,7 +6,7 @@ type LazyLoadProps = {
   threshold?: number; // How much of the component must be visible before loading
 };
 
-const LazyLoad: React.FC<LazyLoadProps> = ({
+export const LazyLoad: React.FC<LazyLoadProps> = ({
   children,
   rootMargin = '0px',
   threshold = 0.1,
@@ -41,5 +41,3 @@ const LazyLoad: React.FC<LazyLoadProps> = ({
 
   return <div ref={ref}>{isVisible ? children : null}</div>;
 };
-
-export default LazyLoad;

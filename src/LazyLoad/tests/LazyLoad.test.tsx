@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'; // Provides helpful DOM matchers
 import { act, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-import LazyLoad from '../LazyLoad';
+import { LazyLoad } from '../LazyLoad';
 
 // Mocking IntersectionObserver
 beforeAll(() => {
