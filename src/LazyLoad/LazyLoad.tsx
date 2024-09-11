@@ -4,14 +4,12 @@ type LazyLoadProps = {
   children: React.ReactNode;
   rootMargin?: string; // Distance from the viewport at which the component should load
   threshold?: number; // How much of the component must be visible before loading
-  height?: string;
 };
 
 export const LazyLoad: React.FC<LazyLoadProps> = ({
   children,
   rootMargin = '0px',
   threshold = 0.1,
-  height = '100px',
 }) => {
   const [isVisible, setIsVisible] = useState(false); // To track if the component is visible
   const ref = useRef<HTMLDivElement | null>(null); // Ref for the element to be observed
@@ -41,14 +39,5 @@ export const LazyLoad: React.FC<LazyLoadProps> = ({
     };
   }, [rootMargin, threshold]);
 
-  return (
-    <div
-      ref={ref}
-      style={{
-        height: height,
-      }}
-    >
-      {isVisible ? children : null}
-    </div>
-  );
+  return <div ref={ref}>{isVisible ? children : null}</div>;
 };
