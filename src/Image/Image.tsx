@@ -16,8 +16,8 @@ export const Image: React.FC<ImageProps> = ({
   srcSet,
   sizes,
   alt,
-  width,
-  height,
+  width = 640,
+  height = 360,
   sources,
   style,
   lazy = true, // Lazy-load by default, can be disabled for critical images
@@ -34,8 +34,8 @@ export const Image: React.FC<ImageProps> = ({
     opacity: isLoading ? 0.5 : 1, // Show a faded image while loading
     transition: 'opacity 0.3s ease-in-out', // Smooth transition
     objectFit: 'cover', // Ensure proper image fit
-    width: width ? `${width}px` : 'auto',
-    height: height ? `${height}px` : 'auto',
+    width: width,
+    height: height,
   };
 
   // Merge the user-defined styles with the default styles
