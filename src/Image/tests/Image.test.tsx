@@ -1,7 +1,7 @@
 // src/__tests__/Image.test.tsx
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import Image from '../Image';
+import { Image } from '../Image';
 
 describe('Image Component', () => {
   it('renders an image with the correct alt text', () => {
