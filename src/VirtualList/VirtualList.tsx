@@ -35,8 +35,8 @@ export const VirtualList = <T extends Item>({
   const cache = useRef<Map<number, ReactNode>>(new Map());
 
   return (
-    <div style={{ ...containerStyle }}>
-      <div style={{ ...placeholderStyle }}>
+    <div style={{ ...containerStyle, listStyleType: 'none', padding: 0 }}>
+      <ul style={{ ...placeholderStyle }}>
         {visibleItems.map((item: T, index: number) => {
           // Calculate the item's actual index in the grid
           const actualIndex = items.indexOf(item);
@@ -50,7 +50,7 @@ export const VirtualList = <T extends Item>({
           }
 
           return (
-            <div
+            <li
               key={item.id}
               style={{
                 gridRowStart: row + 1, // Position the item in the correct row
@@ -60,10 +60,10 @@ export const VirtualList = <T extends Item>({
               }}
             >
               {cache.current.get(item.id)}
-            </div>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </div>
   );
 };
