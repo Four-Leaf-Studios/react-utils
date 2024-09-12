@@ -1,64 +1,14 @@
-import React, { useState } from 'react';
-import { Image } from '../Image/Image';
+import React from 'react';
 
-type VideoComponentProps = {
-  thumbnail: string; // URL of the thumbnail image
-  videoUrl: string; // URL of the video
-  altText?: string; // Optional alt text for the thumbnail
-  classes?: {
-    container?: string;
-    video?: string;
-    thumbnail?: string;
-  };
-  videoProps?: React.VideoHTMLAttributes<HTMLVideoElement>; // Additional props for the video element
-};
+type VideoProps = {
+  src: string; // URL for the video source
+} & React.VideoHTMLAttributes<HTMLVideoElement>; // Other video attributes
 
-const VideoComponent: React.FC<VideoComponentProps> = ({
-  thumbnail,
-  videoUrl,
-  altText = 'Video Thumbnail',
-  classes = {
-    container: '',
-    thumbnail: '',
-    video: '',
-  },
-  videoProps = {
-    width: 640,
-    height: 360,
-  },
-}) => {
-  const [isHovered, setIsHovered] = useState(false);
-
+export const Video: React.FC<VideoProps> = ({ src, ...props }) => {
   return (
-    <div
-      className={classes.container}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      style={{
-        position: 'relative',
-      }}
-    >
-      {isHovered ? (
-        <video
-          data-testid="video"
-          className={classes.video}
-          controls
-          {...videoProps}
-        >
-          <source src={videoUrl} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      ) : (
-        <Image
-          src={thumbnail}
-          alt={altText}
-          className={classes.thumbnail}
-          height={videoProps.height}
-          width={videoProps.width}
-        />
-      )}
-    </div>
+    <video data-testid="video" {...props}>
+      <source src={src} type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
   );
 };
-
-export default VideoComponent;
