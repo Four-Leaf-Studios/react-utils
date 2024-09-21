@@ -3,9 +3,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 interface UseVirtualListProps<T> {
   items: T[];
   itemHeight: number;
-  itemWidth: number; // Add itemWidth to calculate items per row
-  columns: number; // Add columns for grid layout
+  itemWidth: number;
+  columns: number;
   overscan?: number;
+  gridGap?: number; // Add gridGap to the props
 }
 
 interface VirtualListData<T> {
@@ -20,6 +21,7 @@ export function useVirtualList<T>({
   itemWidth,
   columns,
   overscan = 2,
+  gridGap = 0, // Default gridGap
 }: UseVirtualListProps<T>): VirtualListData<T> {
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(0);
@@ -28,7 +30,10 @@ export function useVirtualList<T>({
 
   const scrollTopRef = useRef<number>(0);
 
-  const visibleRowCount = Math.ceil(windowHeight / itemHeight);
+  // Adjust the visibleRowCount to include gridGap
+  const visibleRowCount = Math.ceil(
+    (windowHeight + gridGap) / (itemHeight + gridGap)
+  );
   const itemsPerRow = columns; // Number of columns is now based on prop
 
   const handleScroll = useCallback(() => {
@@ -36,7 +41,9 @@ export function useVirtualList<T>({
 
     requestAnimationFrame(() => {
       const newScrollTop = scrollTopRef.current;
-      const rowIndex = Math.floor(newScrollTop / itemHeight);
+
+      // Calculate rowIndex based on the itemHeight and gridGap
+      const rowIndex = Math.floor(newScrollTop / (itemHeight + gridGap));
 
       const newStartRow = Math.max(0, rowIndex - overscan);
       const newEndRow = Math.min(
@@ -59,6 +66,7 @@ export function useVirtualList<T>({
     itemHeight,
     items.length,
     itemsPerRow,
+    gridGap, // Include gridGap in the scroll calculations
     overscan,
     startIndex,
     endIndex,
@@ -82,7 +90,9 @@ export function useVirtualList<T>({
     };
   }, [handleScroll, handleResize]);
 
-  const totalHeight = Math.ceil(items.length / itemsPerRow) * itemHeight;
+  // Adjust the totalHeight to account for gridGap between rows
+  const totalHeight =
+    Math.ceil(items.length / itemsPerRow) * (itemHeight + gridGap) - gridGap;
 
   return {
     visibleItems: items.slice(startIndex, endIndex + 1),
@@ -94,6 +104,7 @@ export function useVirtualList<T>({
       display: 'grid',
       gridTemplateColumns: `repeat(${columns}, ${itemWidth}px)`,
       gridAutoRows: `${itemHeight}px`,
+      gap: `${gridGap}px`, // Apply grid gap here
     },
   };
 }
