@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 // Define the cache type with a generic and use unknown to avoid any
 const cache: { [key: string]: unknown } = {};
@@ -15,6 +15,9 @@ export function useFetch<T>(
 
   // Ref to store the AbortController for cleanup
   const abortControllerRef = useRef<AbortController | null>(null);
+
+  // Memoize the options object to avoid unnecessary re-fetches
+  const memoizedOptions = useMemo(() => options, [options]);
 
   useEffect(() => {
     // Create a new AbortController for this fetch call
@@ -35,7 +38,7 @@ export function useFetch<T>(
       try {
         setLoading(true);
         const response = await fetch(url, {
-          ...options,
+          ...memoizedOptions, // Use the memoized options
           signal: controller.signal,
         });
 
@@ -75,7 +78,7 @@ export function useFetch<T>(
         abortControllerRef.current.abort();
       }
     };
-  }, [url, options, retries, useCache]); // Re-fetch if cache option changes
+  }, [url, memoizedOptions, retries, useCache]); // Use memoized options
 
   return { data, loading, error };
 }

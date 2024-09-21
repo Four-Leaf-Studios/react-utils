@@ -9,6 +9,7 @@ interface VirtualListProps<T> {
   renderItem?: (item: T, index: number) => ReactNode; // Function to render each item
   itemWidth?: number; // Width of each item
   columns?: number; // Number of columns
+  gridGap?: number; // Gap between grid items
 }
 
 // Define a type for the generic item, if needed
@@ -23,6 +24,7 @@ export const VirtualList = <T extends Item>({
   renderItem = (item, index) => <div>{`Item ${index}`}</div>,
   itemWidth = 150,
   columns = 3,
+  gridGap = 10, // Default gap
 }: VirtualListProps<T>) => {
   const { visibleItems, containerStyle, placeholderStyle } = useVirtualList({
     items,
@@ -30,20 +32,19 @@ export const VirtualList = <T extends Item>({
     itemWidth,
     columns,
     overscan: overScan,
+    gridGap, // Pass the gridGap to the hook
   });
 
   const cache = useRef<Map<number, ReactNode>>(new Map());
 
   return (
     <div style={{ ...containerStyle, listStyleType: 'none', padding: 0 }}>
-      <ul style={{ ...placeholderStyle }}>
+      <ul style={{ ...placeholderStyle, gap: `${gridGap}px` }}>
         {visibleItems.map((item: T, index: number) => {
-          // Calculate the item's actual index in the grid
           const actualIndex = items.indexOf(item);
           const row = Math.floor(actualIndex / columns);
           const column = actualIndex % columns;
 
-          // Check if the component is already cached
           if (!cache.current.has(item.id)) {
             const renderedComponent = renderItem(item, index);
             cache.current.set(item.id, renderedComponent);
@@ -53,8 +54,8 @@ export const VirtualList = <T extends Item>({
             <li
               key={item.id}
               style={{
-                gridRowStart: row + 1, // Position the item in the correct row
-                gridColumnStart: column + 1, // Position the item in the correct column
+                gridRowStart: row + 1,
+                gridColumnStart: column + 1,
                 width: `${itemWidth}px`,
                 height: `${itemHeight}px`,
               }}
