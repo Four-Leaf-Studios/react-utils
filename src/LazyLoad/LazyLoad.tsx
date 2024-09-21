@@ -45,7 +45,7 @@ export const LazyLoad: React.FC<LazyLoadProps> = ({
     <div
       ref={ref}
       style={{
-        height: height,
+        height: isVisible ? 'auto' : height,
       }}
     >
       {isVisible ? children : null}

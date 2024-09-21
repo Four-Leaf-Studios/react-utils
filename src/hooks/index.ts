@@ -1,3 +1,4 @@
+export { useBreakpoints } from './useBreakpoints';
 export { useDebounce } from './useDebounce';
 export { useFetch } from './useFetch';
 export { useInterval } from './useInterval';
@@ -6,3 +7,4 @@ export { useOnClickOutside } from './useOnClickOutside';
 export { usePrevious } from './usePrevious';
 export { useTimeout } from './useTimeout';
 export { useToggle } from './useToggle';
+export { useVirtualList } from './useVirtualList';
